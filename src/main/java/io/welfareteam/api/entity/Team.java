@@ -18,6 +18,9 @@ public class Team {
 	private Long id;
 	
 	private String name;
+	
+	@ManyToMany
+	private List<User> admins;
 
 	@ManyToMany
 	private List<User> users;

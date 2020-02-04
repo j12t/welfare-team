@@ -1,5 +1,6 @@
 package io.welfareteam.api.config;
 
+import java.util.Date;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -12,12 +13,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import io.welfareteam.api.common.MoodLevel;
+import io.welfareteam.api.entity.Mood;
 import io.welfareteam.api.entity.User;
+import io.welfareteam.api.repository.MoodRepository;
 import io.welfareteam.api.repository.UserRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "io.welfareteam.api.repository")
-@ComponentScan(basePackages = { "io.welfareteam.api.controller", "io.welfareteam.api.assembler" })
+@ComponentScan(basePackages = { "io.welfareteam.api.config", "io.welfareteam.api.controller", "io.welfareteam.api.resource.assembler" })
 @EntityScan(basePackages = "io.welfareteam.api.entity")
 public class Application {
 
@@ -28,27 +32,47 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner demo(UserRepository repository) {
+	public CommandLineRunner demo(UserRepository userRepository, MoodRepository moodRepository) {
 		return (args) -> {
 
 			User user = new User();
 			user.setEmail("jerome.thibault@natixis.com");
 			user.setFirstname("Jerome");
 			user.setName("Thibault");
+			user.setTeams(null);
 
-			repository.save(user);
+			userRepository.save(user);
 
-			List<User> users = repository.findAll();
+			List<User> users = userRepository.findAll();
 
 			if (users != null && !users.isEmpty()) {
 
 				log.info("Users found : " + users.size());
 
-				for (User item : repository.findAll()) {
+				for (User item : users) {
 					log.info(item.toString());
 				}
 			}
+			
+			Mood mood  = new Mood();
+			mood.setComment("blabla");
+			mood.setDay(new Date());
+			mood.setLevel(MoodLevel.GOOD);
+			mood.setUser(user);
+			
+			moodRepository.save(mood);
+			List<Mood> moods = moodRepository.findAll();
 
+			if (moods != null && !moods.isEmpty()) {
+
+				log.info("Moods found : " + moods.size());
+
+				for (Mood item : moods) {
+					log.info(item.toString());
+				}
+			}
+			
+			
 		};
 	}
 

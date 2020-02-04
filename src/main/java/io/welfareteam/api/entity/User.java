@@ -23,6 +23,9 @@ public class User {
 	
 	private String firstname;
 	
+	@ManyToMany(mappedBy="admins", targetEntity = Team.class)
+	private List<Team> managedTeam;
+	
 	@ManyToMany(mappedBy="users", targetEntity = Team.class)
 	private List<Team> teams;
 
@@ -110,6 +113,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public List<Team> getManagedTeam() {
+		return managedTeam;
+	}
+
+	public void setManagedTeam(List<Team> managedTeam) {
+		this.managedTeam = managedTeam;
 	}
 	
 }
