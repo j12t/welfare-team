@@ -26,7 +26,7 @@ public class User {
 	@ManyToMany(mappedBy="admins", targetEntity = Team.class)
 	private List<Team> managedTeam;
 	
-	@ManyToMany(mappedBy="users", targetEntity = Team.class)
+	@ManyToMany(mappedBy="members", targetEntity = Team.class)
 	private List<Team> teams;
 
 	public User() {

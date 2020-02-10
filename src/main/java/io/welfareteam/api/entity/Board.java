@@ -5,22 +5,20 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
-//@Entity
+@Entity
 public class Board {
 
 	@Id
-	private Long id;
+	private Long		id;
 
 	@Basic
-	private String name;
+	private String		name;
 
-	@ManyToMany
-	@JoinColumn(name = "team_id")
-	private List<Team> teams;
-	
+	@OneToMany(mappedBy = "board")
+	private List<Team>	teams;
+
 	public Board() {
 		super();
 	}
@@ -39,6 +37,14 @@ public class Board {
 
 	public void setTeams(List<Team> teams) {
 		this.teams = teams;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

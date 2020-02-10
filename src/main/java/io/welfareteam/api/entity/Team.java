@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -23,7 +24,10 @@ public class Team {
 	private List<User> admins;
 
 	@ManyToMany
-	private List<User> users;
+	private List<User> members;
+	
+    @ManyToOne
+    private Board board;
 	
 	public Team() {
 		super();
@@ -45,12 +49,28 @@ public class Team {
 		this.id = id;
 	}
 
-	public List<User> getUsers() {
-		return users;
+	public List<User> getMembers() {
+		return members;
 	}
 
-	public void setUsers(List<User> users) {
-		this.users = users;
+	public void setMembers(List<User> members) {
+		this.members = members;
+	}
+
+	public List<User> getAdmins() {
+		return admins;
+	}
+
+	public void setAdmins(List<User> admins) {
+		this.admins = admins;
+	}
+
+	public Board getBoard() {
+		return board;
+	}
+
+	public void setBoard(Board board) {
+		this.board = board;
 	}
 
 }

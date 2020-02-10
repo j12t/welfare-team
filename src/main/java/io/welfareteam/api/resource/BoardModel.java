@@ -8,11 +8,11 @@ public class BoardModel extends RepresentationModel<BoardModel> {
 	
 	private String name;
 	
+	private List<Long> teamIds;
+	
 	public BoardModel() {
 		super();
 	}
-
-	private List<TeamModel> teams;
 
 	public String getName() {
 		return name;
@@ -22,12 +22,12 @@ public class BoardModel extends RepresentationModel<BoardModel> {
 		this.name = name;
 	}
 
-	public List<TeamModel> getTeams() {
-		return teams;
+	public List<Long> getTeamIds() {
+		return teamIds;
 	}
 
-	public void setTeams(List<TeamModel> teams) {
-		this.teams = teams;
+	public void setTeamIds(List<Long> teamIds) {
+		this.teamIds = teamIds;
 	}
 
 }
