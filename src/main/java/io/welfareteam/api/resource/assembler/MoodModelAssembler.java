@@ -27,6 +27,7 @@ public class MoodModelAssembler extends RepresentationModelAssemblerSupport<Mood
 		
 		MoodModel model = new MoodModel();
 		
+		model.setId(entity.getId());
 		model.setComment(entity.getComment());
 		model.setDay(entity.getDay());
 		model.setLevel(entity.getLevel());

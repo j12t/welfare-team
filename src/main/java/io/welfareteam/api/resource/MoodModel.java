@@ -5,12 +5,16 @@ import java.util.List;
 
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import io.welfareteam.api.common.MoodLevel;
 
+@Relation(collectionRelation = "items")
 public class MoodModel extends RepresentationModel<MoodModel> {
+
+	private Long		id;
 
 	@JsonIgnore
 	private UserModel	user;
@@ -73,6 +77,14 @@ public class MoodModel extends RepresentationModel<MoodModel> {
 
 	public void setUserId(Long userId) {
 		this.userId = userId;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }
