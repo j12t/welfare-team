@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ import io.welfareteam.api.resource.MoodModel;
 import io.welfareteam.api.resource.assembler.MoodModelAssembler;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/v1/moods")
 public class MoodController {
 
