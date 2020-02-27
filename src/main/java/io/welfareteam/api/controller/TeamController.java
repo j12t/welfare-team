@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,6 @@ import io.welfareteam.api.resource.TeamModel;
 import io.welfareteam.api.resource.assembler.TeamModelAssembler;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/v1/teams")
 public class TeamController {
 
@@ -71,6 +69,18 @@ public class TeamController {
 			}
 		}
 
+		if (teamModel.getMembers() != null) {
+			team.setMembers(new ArrayList<User>());
+			for (Long id : teamModel.getMembers()) {
+				try {
+					User user = userRepository.findById(id).get();
+					team.getMembers().add(user);
+				} catch (NoSuchElementException e) {
+					throw new NoSuchElementException("User with id " + id + " not found");
+				}
+			}
+		}
+		
 		team = teamRepository.saveAndFlush(team);
 		return assembler.toModel(team);
 	}
