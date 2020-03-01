@@ -1,4 +1,4 @@
-package io.welfareteam.api.config;
+package io.welfareteam.api.authentication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

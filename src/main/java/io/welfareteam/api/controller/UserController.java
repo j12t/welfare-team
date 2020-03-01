@@ -37,7 +37,6 @@ public class UserController {
 		return pageAssembler.toModel(users, assembler);
 	}
 	
-	
 	@RequestMapping(path= "/{id}", method = RequestMethod.GET)
 	public UserModel getUser(@PathVariable("id") Long id) {
 		

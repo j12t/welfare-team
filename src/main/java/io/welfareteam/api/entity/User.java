@@ -2,12 +2,17 @@ package io.welfareteam.api.entity;
 
 import java.util.List;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.hibernate.annotations.NaturalId;
 
 @Entity
 @Table(name = "USER")
@@ -17,11 +22,22 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
+	@NaturalId
+	private String login;
+	
+	private String password;
+	
+	private String enabled;
+	
 	private String email;
 	
 	private String name;
 	
 	private String firstname;
+	
+	@ElementCollection
+	@CollectionTable(name = "user_role")
+	private List<String> roles;
 	
 	@ManyToMany(mappedBy="admins", targetEntity = Team.class)
 	private List<Team> managedTeam;
@@ -121,6 +137,44 @@ public class User {
 
 	public void setManagedTeam(List<Team> managedTeam) {
 		this.managedTeam = managedTeam;
+	}
+
+	public String getLogin() {
+		return login;
+	}
+
+	public void setLogin(String aLogin) {
+		login = aLogin;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String aPassword) {
+		password = aPassword;
+	}
+
+	public List<String> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<String> aRoles) {
+		roles = aRoles;
+	}
+
+	/**
+	 * @return the field enabled
+	 */
+	public String getEnabled() {
+		return enabled;
+	}
+
+	/**
+	 * @param aEnabled the field enabled to set
+	 */
+	public void setEnabled(String aEnabled) {
+		enabled = aEnabled;
 	}
 	
 }

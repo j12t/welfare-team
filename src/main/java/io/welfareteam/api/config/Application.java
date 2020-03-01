@@ -12,6 +12,7 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import io.welfareteam.api.common.MoodLevel;
 import io.welfareteam.api.entity.Mood;
@@ -21,7 +22,7 @@ import io.welfareteam.api.repository.UserRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "io.welfareteam.api.repository")
-@ComponentScan(basePackages = { "io.welfareteam.api.config", "io.welfareteam.api.controller", "io.welfareteam.api.resource.assembler" })
+@ComponentScan(basePackages = { "io.welfareteam.api.authentication", "io.welfareteam.api.config", "io.welfareteam.api.controller", "io.welfareteam.api.resource.assembler" })
 @EntityScan(basePackages = "io.welfareteam.api.entity")
 public class Application {
 
@@ -36,7 +37,9 @@ public class Application {
 		return (args) -> {
 
 			User user = new User();
-			user.setEmail("jerome.thibault@natixis.com");
+			user.setLogin("j12t");
+			user.setPassword(new BCryptPasswordEncoder().encode("password"));
+			user.setEmail("j12t@natixis.com");
 			user.setFirstname("Jerome");
 			user.setName("Thibault");
 			user.setTeams(null);
