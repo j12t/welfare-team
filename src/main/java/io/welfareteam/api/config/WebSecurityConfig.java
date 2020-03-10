@@ -1,7 +1,5 @@
 package io.welfareteam.api.config;
 
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -31,9 +29,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private JwtRequestFilter			jwtRequestFilter;
 
-//	@Autowired
-//	private DataSource					dataSource;
-//
 	@Autowired
 	public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 		// configure AuthenticationManager so that it knows from where to load
@@ -47,12 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-//		auth.jdbcAuthentication().dataSource(dataSource).usersByUsernameQuery("select login, password, enabled from user where login=?")
-//			.authoritiesByUsernameQuery("select login, role from user_roles where login=?").passwordEncoder(passwordEncoder());
-//	}
-//
 	@Bean
 	@Override
 	public AuthenticationManager authenticationManagerBean() throws Exception {

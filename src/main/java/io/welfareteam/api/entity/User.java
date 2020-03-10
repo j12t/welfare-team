@@ -12,6 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 import org.hibernate.annotations.NaturalId;
 
 @Entity
@@ -37,6 +39,7 @@ public class User {
 	
 	@ElementCollection
 	@CollectionTable(name = "user_role")
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<String> roles;
 	
 	@ManyToMany(mappedBy="admins", targetEntity = Team.class)
