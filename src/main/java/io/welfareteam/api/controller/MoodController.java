@@ -2,17 +2,27 @@ package io.welfareteam.api.controller;
 
 import java.util.NoSuchElementException;
 
+import javax.annotation.security.RolesAllowed;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.common.exceptions.UnauthorizedClientException;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import io.welfareteam.api.entity.Mood;
 import io.welfareteam.api.entity.User;
@@ -36,7 +46,7 @@ public class MoodController {
 	private UserRepository userRepository;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public PagedModel<MoodModel> getAllMoods(Pageable page) {
+	public PagedModel<MoodModel> getAllMoods(HttpServletRequest request, Pageable page) {
 		
 		Page<Mood> moods = moodRepository.findAll(page);
 		

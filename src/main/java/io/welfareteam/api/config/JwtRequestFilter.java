@@ -45,12 +45,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 				e.printStackTrace();
 			}
 		} else {
-			final String requestTokenHeader = request.getHeader("X-Authorization");
+			final String requestTokenHeader = request.getHeader("Authorization");
 			String username = null;
 			String jwtToken = null;
 			// JWT Token is in the form "Bearer token". Remove Bearer word and get only the Token
-			// TODO JTH : check in angular code for interceptor that sends bearer null dring login
-			if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ") && !requestTokenHeader.startsWith("Bearer null")) {
+			if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
 				jwtToken = requestTokenHeader.substring(7);
 				try {
 					username = jwtTokenUtil.getUsernameFromToken(jwtToken);
@@ -64,7 +63,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 			}
 			// Once we get the token validate it.
 			if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+				
+				logger.info("Identify with JWT");
+
 				UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+
+				logger.info("User : " + username);
+
 				// if token is valid configure Spring Security to manually set authentication
 				if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {
 					UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());

@@ -21,7 +21,7 @@ import io.welfareteam.api.resource.ErrorsModel;
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = { NoSuchElementException.class})
-	protected ResponseEntity<Object> handleConflict(RuntimeException ex, WebRequest request) {
+	protected ResponseEntity<Object> handleNotFound(RuntimeException ex, WebRequest request) {
 		
 		ErrorsModel errors = new ErrorsModel();
 		ErrorModel error = new ErrorModel();
@@ -33,8 +33,20 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 	}
 
 	
-	@ExceptionHandler(value = { NotFound.class, BadRequest.class})
-	protected ResponseEntity<Object> handleNotFound(HttpClientErrorException ex, WebRequest request) {
+//	@ExceptionHandler(value = { NotFound.class, BadRequest.class})
+//	protected ResponseEntity<Object> handleNotFound(HttpClientErrorException ex, WebRequest request) {
+//		
+//		ErrorsModel errors = new ErrorsModel();
+//		ErrorModel error = new ErrorModel();
+//		error.setCode(ex.getStatusText());
+//		error.setMessage(ex.getMessage());
+//		errors.setErrors(Arrays.asList(error));
+//		
+//		return handleExceptionInternal(ex, errors, new HttpHeaders(), ex.getStatusCode(), request);
+//	}
+	
+	@ExceptionHandler(value = { HttpClientErrorException.class})
+	protected ResponseEntity<Object> handleUnAuthorized(HttpClientErrorException ex, WebRequest request) {
 		
 		ErrorsModel errors = new ErrorsModel();
 		ErrorModel error = new ErrorModel();
@@ -44,5 +56,5 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
 		
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), ex.getStatusCode(), request);
 	}
-	
+
 }

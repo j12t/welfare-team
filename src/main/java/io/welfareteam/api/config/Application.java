@@ -1,5 +1,6 @@
 package io.welfareteam.api.config;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -39,10 +40,11 @@ public class Application {
 			User user = new User();
 			user.setLogin("j12t");
 			user.setPassword(new BCryptPasswordEncoder().encode("password"));
-			user.setEmail("j12t@natixis.com");
+			user.setEmail("j12t@github.com");
 			user.setFirstname("Jerome");
 			user.setName("Thibault");
 			user.setTeams(null);
+			user.setRoles(Arrays.asList("ADMIN"));
 
 			userRepository.save(user);
 

@@ -8,12 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
 import io.welfareteam.api.entity.Team;
 import io.welfareteam.api.entity.User;
@@ -55,6 +59,12 @@ public class TeamController {
 
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public TeamModel createTeam(@RequestBody TeamModel teamModel) {
+
+		boolean isAdmin = SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"));
+		
+		if (!isAdmin) {
+			throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+		}
 
 		Team team = new Team();
 		team.setName(teamModel.getName());
