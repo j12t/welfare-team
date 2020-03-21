@@ -7,17 +7,12 @@ import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import io.welfareteam.api.common.MoodLevel;
 
 @Relation(collectionRelation = "items")
 public class MoodModel extends RepresentationModel<MoodModel> {
 
 	private Long		id;
-
-	@JsonIgnore
-	private UserModel	user;
 
 	private Long		userId;
 
@@ -37,14 +32,6 @@ public class MoodModel extends RepresentationModel<MoodModel> {
 
 	public MoodModel(List<Link> initialLinks) {
 		super(initialLinks);
-	}
-
-	public UserModel getUser() {
-		return user;
-	}
-
-	public void setUser(UserModel user) {
-		this.user = user;
 	}
 
 	public MoodLevel getLevel() {

@@ -8,13 +8,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpClientErrorException;
 
+import io.welfareteam.api.config.SecurityUtils;
 import io.welfareteam.api.entity.Team;
 import io.welfareteam.api.entity.User;
 import io.welfareteam.api.repository.TeamRepository;
@@ -36,7 +40,7 @@ public class TeamController {
 	@Autowired
 	private UserRepository		userRepository;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@GetMapping
 	public PagedModel<TeamModel> getAllTeams(Pageable page) {
 
 		Page<Team> teams = teamRepository.findAll(page);
@@ -46,15 +50,19 @@ public class TeamController {
 		return pageAssembler.toModel(teams, assembler);
 	}
 
-	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+	@GetMapping(path = "/{id}")
 	public TeamModel getTeam(@PathVariable("id") Long id) {
 
 		Team team = teamRepository.findById(id).get();
 		return assembler.toModel(team);
 	}
 
-	@RequestMapping(path = "", method = RequestMethod.POST)
+	@PostMapping
 	public TeamModel createTeam(@RequestBody TeamModel teamModel) {
+
+		if (!SecurityUtils.isAdmin()) {
+			throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+		}
 
 		Team team = new Team();
 		team.setName(teamModel.getName());

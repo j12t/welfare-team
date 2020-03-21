@@ -1,5 +1,6 @@
 package io.welfareteam.api.config;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +13,8 @@ import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import io.welfareteam.api.common.MoodLevel;
 import io.welfareteam.api.entity.Mood;
@@ -21,8 +24,9 @@ import io.welfareteam.api.repository.UserRepository;
 
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "io.welfareteam.api.repository")
-@ComponentScan(basePackages = { "io.welfareteam.api.config", "io.welfareteam.api.controller", "io.welfareteam.api.resource.assembler" })
+@ComponentScan(basePackages = { "io.welfareteam.api.authentication", "io.welfareteam.api.config", "io.welfareteam.api.controller", "io.welfareteam.api.resource.assembler" })
 @EntityScan(basePackages = "io.welfareteam.api.entity")
+@EnableScheduling
 public class Application {
 
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -36,10 +40,25 @@ public class Application {
 		return (args) -> {
 
 			User user = new User();
-			user.setEmail("jerome.thibault@natixis.com");
-			user.setFirstname("Jerome");
-			user.setName("Thibault");
+			user.setLogin("user");
+			user.setPassword(new BCryptPasswordEncoder().encode("password"));
+			user.setEmail("user@github.com");
+			user.setFirstname("User");
+			user.setName("User");
 			user.setTeams(null);
+			user.setRoles(Arrays.asList("USER"));
+
+			userRepository.save(user);
+			
+			
+			user = new User();
+			user.setLogin("admin");
+			user.setPassword(new BCryptPasswordEncoder().encode("password"));
+			user.setEmail("admin@github.com");
+			user.setFirstname("Admin");
+			user.setName("Admin");
+			user.setTeams(null);
+			user.setRoles(Arrays.asList("ADMIN"));
 
 			userRepository.save(user);
 
