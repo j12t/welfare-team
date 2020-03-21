@@ -5,7 +5,9 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+
+import io.welfareteam.api.config.UserToken;
+import io.welfareteam.api.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,14 +24,14 @@ public class JwtUserDetailsService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		
-		io.welfareteam.api.entity.User user = userRepository.findByLogin(username);
+		User user = userRepository.findByLogin(username).get();
 		
 		if (user != null) {
 			List<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
 			for (String role : user.getRoles()) {
 				roles.add(new SimpleGrantedAuthority(role));
 			}
-			return new User(user.getLogin(), user.getPassword(), roles);
+			return new UserToken(user, user.getLogin(), user.getPassword(), roles);
 		}
 		throw new UsernameNotFoundException("User not found with username: " + username);
 	}

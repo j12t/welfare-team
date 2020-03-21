@@ -30,15 +30,16 @@ public class UserModelAssembler extends RepresentationModelAssemblerSupport<User
 	public UserModel toModel(User entity) {
 		
 		UserModel model = new UserModel();
+		model.setId(entity.getId());
 		model.setEmail(entity.getEmail());
 		model.setFirstname(entity.getFirstname());
 		model.setName(entity.getName());
 		
-		List<TeamModel> teamModels  = new ArrayList<TeamModel>();
-		for (Team team : entity.getTeams()) {
-			teamModels.add(assembler.toModel(team));
-		}
-		model.setTeams(teamModels);
+//		List<TeamModel> teamModels  = new ArrayList<TeamModel>();
+//		for (Team team : entity.getTeams()) {
+//			teamModels.add(assembler.toModel(team));
+//		}
+//		model.setTeams(teamModels);
 		
 		model.add(linkTo(methodOn(UserController.class).getUser(entity.getId())).withSelfRel());
 		

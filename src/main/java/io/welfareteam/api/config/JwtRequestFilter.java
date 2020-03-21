@@ -34,7 +34,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		response.setHeader("Access-Control-Allow-Origin", "*");
 		response.setHeader("Access-Control-Allow-Methods", "POST, GET, PUT, OPTIONS, DELETE, PATCH");
 		response.setHeader("Access-Control-Max-Age", "3600");
-		response.setHeader("Access-Control-Allow-Headers", "Authorization, X-Authorization, Content-Type");
+		response.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type");
 		response.setHeader("Access-Control-Allow-Credentials", "true");
 
 		if (request.getMethod().equals("OPTIONS")) {
