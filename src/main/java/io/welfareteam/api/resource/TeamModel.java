@@ -6,12 +6,18 @@ import org.springframework.hateoas.RepresentationModel;
 
 public class TeamModel extends RepresentationModel<TeamModel> {
 
-	private String name;
+	private Long				id;
 
-	private List<Long> admins;
+	private String				name;
 
-	private List<Long> members;
-	
+	private List<Long>			admins;
+
+	private List<Long>			members;
+
+	// private BoardModel board;
+
+	private MailSettingModel	mailSetting;
+
 	public TeamModel() {
 		super();
 	}
@@ -39,7 +45,21 @@ public class TeamModel extends RepresentationModel<TeamModel> {
 	public void setMembers(List<Long> members) {
 		this.members = members;
 	}
-	
-	
-	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public MailSettingModel getMailSetting() {
+		return mailSetting;
+	}
+
+	public void setMailSetting(MailSettingModel mailSetting) {
+		this.mailSetting = mailSetting;
+	}
+
 }

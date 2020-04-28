@@ -72,13 +72,17 @@ public class Mood {
 		this.id = id;
 	}
 
+
+	@Override
+	public String toString() {
+		return "Mood [user=" + user + ", level=" + level + ", comment=" + comment + ", day=" + day + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((comment == null) ? 0 : comment.hashCode());
 		result = prime * result + ((day == null) ? 0 : day.hashCode());
-		result = prime * result + ((level == null) ? 0 : level.hashCode());
 		result = prime * result + ((user == null) ? 0 : user.hashCode());
 		return result;
 	}
@@ -92,17 +96,10 @@ public class Mood {
 		if (getClass() != obj.getClass())
 			return false;
 		Mood other = (Mood) obj;
-		if (comment == null) {
-			if (other.comment != null)
-				return false;
-		} else if (!comment.equals(other.comment))
-			return false;
 		if (day == null) {
 			if (other.day != null)
 				return false;
 		} else if (!day.equals(other.day))
-			return false;
-		if (level != other.level)
 			return false;
 		if (user == null) {
 			if (other.user != null)
@@ -110,11 +107,6 @@ public class Mood {
 		} else if (!user.equals(other.user))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Mood [user=" + user + ", level=" + level + ", comment=" + comment + ", day=" + day + "]";
 	}
 
 }

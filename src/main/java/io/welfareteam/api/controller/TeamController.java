@@ -19,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
 
 import io.welfareteam.api.config.SecurityUtils;
+import io.welfareteam.api.entity.MailSetting;
 import io.welfareteam.api.entity.Team;
 import io.welfareteam.api.entity.User;
+import io.welfareteam.api.repository.MailSettingRepository;
 import io.welfareteam.api.repository.TeamRepository;
 import io.welfareteam.api.repository.UserRepository;
 import io.welfareteam.api.resource.TeamModel;
@@ -32,13 +34,16 @@ import io.welfareteam.api.resource.assembler.TeamModelAssembler;
 public class TeamController {
 
 	@Autowired
-	private TeamModelAssembler	assembler;
+	private TeamModelAssembler		teamAssembler;
 
 	@Autowired
-	private TeamRepository		teamRepository;
+	private TeamRepository			teamRepository;
 
 	@Autowired
-	private UserRepository		userRepository;
+	private MailSettingRepository	mailSettingRepository;
+
+	@Autowired
+	private UserRepository			userRepository;
 
 	@GetMapping
 	public PagedModel<TeamModel> getAllTeams(Pageable page) {
@@ -47,14 +52,14 @@ public class TeamController {
 
 		PagedResourcesAssembler<Team> pageAssembler = new PagedResourcesAssembler<>(null, null);
 
-		return pageAssembler.toModel(teams, assembler);
+		return pageAssembler.toModel(teams, teamAssembler);
 	}
 
 	@GetMapping(path = "/{id}")
 	public TeamModel getTeam(@PathVariable("id") Long id) {
 
 		Team team = teamRepository.findById(id).get();
-		return assembler.toModel(team);
+		return teamAssembler.toModel(team);
 	}
 
 	@PostMapping
@@ -66,6 +71,22 @@ public class TeamController {
 
 		Team team = new Team();
 		team.setName(teamModel.getName());
+
+		if (teamModel.getMailSetting() != null) {
+			MailSetting mailSetting = new MailSetting();
+			mailSetting.setLanguage(teamModel.getMailSetting().getLanguage());
+			mailSetting.setSendingTime(teamModel.getMailSetting().getSendingTime());
+			mailSetting.setMonday(teamModel.getMailSetting().isMonday());
+			mailSetting.setTuesday(teamModel.getMailSetting().isTuesday());
+			mailSetting.setWednesday(teamModel.getMailSetting().isWednesday());
+			mailSetting.setThursday(teamModel.getMailSetting().isThursday());
+			mailSetting.setFriday(teamModel.getMailSetting().isFryday());
+			mailSetting.setSaturday(teamModel.getMailSetting().isSaturday());
+			mailSetting.setSunday(teamModel.getMailSetting().isSunday());
+			
+			mailSettingRepository.save(mailSetting);
+			team.setMailSetting(mailSetting);
+		}
 
 		if (teamModel.getAdmins() != null) {
 			team.setAdmins(new ArrayList<User>());
@@ -80,7 +101,7 @@ public class TeamController {
 		}
 
 		team = teamRepository.saveAndFlush(team);
-		return assembler.toModel(team);
+		return teamAssembler.toModel(team);
 	}
 
 }

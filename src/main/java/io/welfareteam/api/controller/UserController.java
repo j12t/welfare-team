@@ -8,9 +8,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.encrypt.Encryptors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
@@ -78,5 +80,20 @@ public class UserController {
 
 		return pageAssembler.toModel(moods, moodAssembler);
 	}
+	
+	@PostMapping(path = "/{userId}/moods/{moodId}")
+	public PagedModel<MoodModel> getUserMood(@PathVariable("userId") Long userId, @PathVariable("moodId") Long moodId, Pageable page) {
+
+		if (userId != getLogguedUser().getId()) {
+			throw new HttpClientErrorException(HttpStatus.UNAUTHORIZED);
+		}
+
+		Page<Mood> moods = moodRepository.findByUserId(page, userId);
+
+		PagedResourcesAssembler<Mood> pageAssembler = new PagedResourcesAssembler<>(null, null);
+
+		return pageAssembler.toModel(moods, moodAssembler);
+	}
+	
 
 }
