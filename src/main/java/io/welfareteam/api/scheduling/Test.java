@@ -7,6 +7,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import io.welfareteam.api.entity.User;
 import io.welfareteam.api.service.EmailService;
 import io.welfareteam.api.service.TeamService;
 
+//TODO J12T : To move to test directory
 @Component
 public class Test {
 
@@ -36,15 +38,20 @@ public class Test {
 		
 		log.info("The time is now {}", dateFormat.format(date));
 		
+		//get email address from application.properties
+		String username = ((JavaMailSenderImpl) emailService.getJavaMailSender()).getUsername();
+		
+		emailService.sendSimpleMessage(username, "Mail Test", "This is an eamil for testing");
+		
 		List<Team> teams = teamService.getTeamsToSendMail(date);
 		
 		for (Team team : teams) {
 			for (User member : team.getMembers()) {
-				emailService.sendSimpleMessage("thibault.jerome@gmail.com", "Mail for User", "member mail : " + member.getName() + " " + member.getFirstname());
+				emailService.sendSimpleMessage(username, "Mail for User", "member mail : " + member.getName() + " " + member.getFirstname());
 			}
 			
 			for (User member : team.getAdmins()) {
-				emailService.sendSimpleMessage("thibault.jerome@gmail.com", "Mail for Admin", "member mail : " + member.getName() + " " + member.getFirstname());
+				emailService.sendSimpleMessage(username, "Mail for Admin", "member mail : " + member.getName() + " " + member.getFirstname());
 			}
 		}
 	}

@@ -43,6 +43,8 @@ import io.welfareteam.api.service.TeamService;
 @EnableTransactionManagement
 public class Application {
 
+	//J12T check if @enablescheduling is mandatory here
+	// J12T check if @EnableTransactionManagement is mandatory here
 	private static final Logger log = LoggerFactory.getLogger(Application.class);
 
 	public static void main(String[] args) {

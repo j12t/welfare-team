@@ -3,6 +3,7 @@ package io.welfareteam.api.service;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.SpringBootConfiguration;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
@@ -10,13 +11,7 @@ import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
-@TestPropertySource(properties = { "mail.host=smtp.gmail.com",
-		"mail.port=587",
-		"mail.username='user@gmail.com'",
-		"mail.password='password'",
-		"mail.smtp.auth=true",
-		"mail.smtp.starttls.enable=true",
-		"mail.smtp.ssl.trust=smtp.gmail.com"})
+@TestPropertySource(locations="classpath:application-local.properties")
 public class EmailServiceTest {
 
 	@Autowired
